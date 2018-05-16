@@ -1,0 +1,72 @@
+#%RAML 0.8
+title: Leaderboard Admin API
+version: v0.0.1
+baseUri: /api/admin
+
+securitySchemes: 
+  basic:
+    describedBy: 
+      headers:
+        Authorization:
+          description: Should contain jwt-token
+          type: string
+        responses:
+          401:
+            description: Bad or expired token.
+  bot-auth:
+    headers:
+      Authorization:
+        description: Should contain jwt-token
+        type: string
+      responses:
+        401:
+          description: Bad or expired token.
+/login:
+  post:
+    body:
+      application/json:
+        example: !include examples/login.example.json
+    responses: 
+      200:
+        body: 
+          example: !include login.response.example.json
+      401:
+
+/messages:
+
+  get:
+    securedBy: [bot-auth]
+    queryParameters: 
+      eventId:
+        description: id of event
+      lastMessageId: id of last message
+        description: id of last message
+    responses:
+      200:
+        body:
+          schema: !include schemas/messages.get.list.schema.json
+          example: !include examples/messages.get.list.example.json
+
+  post:
+    securedBy: [basic]
+    body: 
+      application/json:
+        schema: !include schemas/messages.create.schema.json
+        examples: !include examples/messages.create.example.json
+    responses: 
+      200:
+      400:
+
+/participants:
+
+  /{id}:
+
+    queryParameters:
+      id:
+        description: Event id
+
+    get:
+      securedBy: [basic]
+      responses: 
+        body:
+          example: !include examples/participants.get.list.example.json

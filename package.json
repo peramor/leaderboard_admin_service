@@ -1,0 +1,19 @@
+{
+  "name": "leaderboard_admin_service",
+  "version": "0.0.1",
+  "description": "Admin API for Leaderboard Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/peramor/leaderboard_admin_service.git"
+  },
+  "author": "Roman Maltsev [per.amor.maltsev@gmail.com]",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/peramor/leaderboard_admin_service/issues"
+  },
+  "homepage": "https://github.com/peramor/leaderboard_admin_service#readme"
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "username": "Roma Maltsev",
+    "pic": null,
+    "contactPhone": null,
+    "email": "example@gmail.com",
+    "status": "applied || confirmed || activated || won",
+    "skills": [
+      "Frontend",
+      "Backend"
+    ],
+    "tgProfileLink": "t.me/peramor",
+    "xp": 300
+  }
+]

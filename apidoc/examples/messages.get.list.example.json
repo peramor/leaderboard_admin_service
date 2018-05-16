@@ -1,0 +1,17 @@
+{
+  "receivers": [
+    "23421",
+    "23541",
+    "52345"
+  ],
+  "messages": [
+    {
+      "id": "1",
+      "content": "Post 1"
+    },
+    {
+      "id": "2",
+      "content": "Post 2"
+    }
+  ]
+}
