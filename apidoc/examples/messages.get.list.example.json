@@ -7,10 +7,12 @@
   "messages": [
     {
       "id": 1,
+      "postTimestamp": "4213412",
       "content": "Post 1"
     },
     {
       "id": 2,
+      "postTimestamp": "4213412",      
       "content": "Post 2"
     }
   ]
