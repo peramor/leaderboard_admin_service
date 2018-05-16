@@ -1,27 +1,24 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema",
-  "type": "array",
-  "items": {
-    "type": "object",
-    "properties": {
-      "receivers" : {
-        "type": "array",
-        "items": {
-          "type": "string",
-          "description": "telegram ids"
-        }
-      },
-      "messages": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "content": {
-              "type": "string"
-            }
+  "type": "object",
+  "properties": {
+    "receivers": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "description": "telegram ids"
+      }
+    },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "content": {
+            "type": "string"
           }
         }
       }
