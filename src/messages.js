@@ -78,6 +78,4 @@ exports.post = async (obj) => {
   } catch (err) {
     return Promise.reject({ code: err.code, message: err.message })
   }
-
-
 }

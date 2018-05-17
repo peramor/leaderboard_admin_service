@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const messages = require('./src/messages');
+const participants = require('./src/participants');
 
 app.use(bodyParser.json());
+
+app.post('/api/admin/login');
 
 app.post('/api/admin/messages', function (req, res) {
   messages.post(req.body)
@@ -21,13 +24,19 @@ app.get('/api/admin/messages', function (req, res) {
       res.send(result);
     })
     .catch(err => {
-      res.status(500).send("bled navalny");
+      res.status(500).send();
     });
 });
 
-app.post('/api/admin/login');
-
-app.get('/api/admin/participants');
+app.get('/api/admin/participants/:id', function(req,res) {
+  participants.getList(req.params.id)
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      res.status(500)
+    })
+});
 
 app.listen(8081, err => {
   if (!err)
