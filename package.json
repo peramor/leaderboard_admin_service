@@ -1,6 +1,6 @@
 {
   "name": "leaderboard_admin_service",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Admin API for Leaderboard Project",
   "main": "app.js",
   "scripts": {
