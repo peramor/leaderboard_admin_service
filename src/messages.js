@@ -1,13 +1,14 @@
-const { pool } = require('../pg-util');
+const { pool } = require('./pg-util');
+const Promise = require('promise');
 
 function getNewerMessages(eventId, lastMessageId) {
   let text = `SELECT * FROM Messages
-  WHERE lastMessageTimestamp > $1 and eventId = $2`;
+  WHERE postTimestamp > $1 and eventId = $2`;
 
   let query = {
     name: 'get-messages',
     text,
-    values(lastMessageId, eventId)
+    values: [lastMessageId, eventId]
   };
 
   return pool.query(query)
@@ -15,7 +16,7 @@ function getNewerMessages(eventId, lastMessageId) {
 }
 
 function getReceivers(eventId) {
-  let text = `SELECT * FROM Participations p
+  let text = `SELECT tgId FROM Participations p
   LEFT JOIN Hackers h on p.hackerId = h.id
   WHERE p.eventId = $1`;
 
@@ -26,7 +27,7 @@ function getReceivers(eventId) {
   }
 
   return pool.query(query)
-    .then(res => res.rows.map(h => h.tgId));
+    .then(res => res.rows.filter(h => h.tgid).map(h => h.tgid));
 }
 
 exports.getList = async (params) => {

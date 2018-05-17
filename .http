@@ -1,0 +1,4 @@
+###
+GET http://localhost:8081/api/admin/messages
+  ?lastMessageTimestamp=1526494933
+  &eventId=2
