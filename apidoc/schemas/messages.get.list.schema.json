@@ -17,7 +17,7 @@
           "id": {
             "type": "number"
           },
-          "postTime": {
+          "postTimestamp": {
             "type": "number",
             "description": "timestamp in sec"
           },

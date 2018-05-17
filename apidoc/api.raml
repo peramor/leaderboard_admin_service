@@ -39,8 +39,11 @@ securitySchemes:
     queryParameters: 
       eventId:
         description: id of event
+        required: true
       lastMessageTimestamp:
         description: last message timestamp in seconds
+        required: false
+        default: last timestamp will be stored on backend side
     responses:
       200:
         body:

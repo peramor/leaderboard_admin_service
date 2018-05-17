@@ -2,6 +2,22 @@ const { pool } = require('./pg-util');
 const Promise = require('promise');
 const { validate } = require('jsonschema');
 const createSchema = require('../apidoc/schemas/messages.create.schema.json')
+const _ = require('underscore');
+const fs = require('fs');
+const TIMESTAMP_PATH = 'last_message_timestamp.txt';
+
+function readTimestamp() {
+  try {
+    let ts = fs.readFileSync(TIMESTAMP_PATH, 'utf8');
+    if (typeof parseInt(ts) != ts)
+      throw '';
+    return ts;
+  } catch (err) {
+    return 1;
+  }
+}
+
+let lastRequestedTimestapm = readTimestamp();
 
 function getNewerMessages(eventId, lastMessageId) {
   let text = `SELECT * FROM Messages
@@ -46,7 +62,7 @@ function postMessage(eventId, content) {
 }
 
 exports.getList = async (params) => {
-  let lastMessageTimestamp = params.lastMessageTimestamp || 0;
+  let lastMessageTimestamp = params.lastMessageTimestamp || lastRequestedTimestapm;
   let eventId = params.eventId;
 
   if (!eventId)
@@ -57,7 +73,12 @@ exports.getList = async (params) => {
 
   let output = {
     receivers,
-    messages
+    messages: messages.map(m => ({
+      id: m.id,
+      eventId: m.eventid,
+      postTimestamp: m.posttimestamp,
+      content: m.content
+    }))
   }
 
   return Promise.resolve(output);
@@ -78,4 +99,16 @@ exports.post = async (obj) => {
   } catch (err) {
     return Promise.reject({ code: err.code, message: err.message })
   }
+}
+
+exports.saveTimestamp = (msgs) => {
+  let newStamp = _.max(msgs, m => m.postTimestamp).postTimestamp;
+  if (!newStamp)
+    return;
+    
+  lastRequestedTimestapm = newStamp;
+  fs.writeFile(TIMESTAMP_PATH, lastRequestedTimestapm, 'utf8', (err) => {
+    if (err)
+      console.error('error while saving timestamp: ', err);
+  })
 }
