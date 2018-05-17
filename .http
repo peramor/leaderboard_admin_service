@@ -1,4 +1,13 @@
 ###
 GET http://localhost:8081/api/admin/messages
-  ?lastMessageTimestamp=1526494933
+  ?lastMessageTimestamp=1526538061
   &eventId=2
+
+###
+POST http://localhost:8081/api/admin/messages
+Content-Type: application/json
+
+{
+  "message": "posted",
+  "eventId": 2
+}

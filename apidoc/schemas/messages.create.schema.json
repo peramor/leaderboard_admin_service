@@ -3,7 +3,7 @@
   "type": "object",
   "properties": {
     "eventId": {
-      "type": "number"
+      "type": ["number", "string"]
     },
     "message": {
       "type": "string"
