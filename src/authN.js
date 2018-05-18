@@ -46,6 +46,9 @@ unit.generatePasswordHash = (pwd, mySalt = '') => {
 function authenticate(req, res, next) {
   try {
     let token = req.headers['authorization'];
+    if (token === process.env.TG_BOT_TOKEN)
+      return next();
+
     let data = decodeToken(token);
 
     req._acl = data;
