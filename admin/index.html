@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+
+    <div id="app">
+        <template v-if="isLogedIn">
+            <table id="receivers-table">
+                <tr v-for="receiver in receivers">
+                    <td> {{receiver}} </td>
+                </tr>
+            </table>
+            <table id="message-table">
+                <tr>
+                    <td>ID</td>
+                    <td>Timestamp</td>
+                    <td>Message</td>
+                </tr>
+                <tr v-for="message in messages">
+                    <td> {{message.id}} </td>
+                    <td> {{message.postTimestamp}} </td>
+                    <td> {{message.content}} </td>
+                </tr>
+            </table>
+            <input v-model="newMessage" placeholder="New message">
+            <button v-on:click="sendNewMessage(newMessage)">Send</button>
+            <br>
+            <button v-on:click="logout">Log out</button>
+        </template>
+        <template v-else>
+            <input v-model="login" placeholder="Login">
+            <input type="password" v-model="password" placeholder="Password" >
+            <button v-on:click="signIn(login, password)">Sign in</button>
+        </template>
+    </div>
+
+    <script>
+        let baseUrl = "https://hackathons.space/api/admin";
+        let messages;
+        let isLogedIn = false;
+        let token = Cookies.get("token");
+        if(token == undefined){
+            token = "";
+        } else {
+            isLogedIn = true;
+        }
+        let receivers;
+        let getMessages = () => $.ajax({
+            url: baseUrl + "/messages",
+            dataType: "json",
+            method: "GET",
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", app.token);
+            },
+            data: {
+                "eventId": 1,
+                lastMessageTimestamp: 1
+            }
+        }).done(resp => {app.messages = resp.messages; app.receivers = resp.receivers ;});
+        sendNewMessage = message => {$.ajax({
+            url: baseUrl + "/messages",
+            dataType: "json",
+            method: "POST",
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", app.token);
+            },
+            data: JSON.stringify(
+                {eventId: 1, message: message}
+            ),
+            contentType: "application/json; charset=utf-8",
+            dataType   : "json",
+        }).done(() => getMessages())};
+        signIn = (login, pwd) => {
+            $.ajax({
+                url: baseUrl + "/login",
+                dataType: "json",
+                method: "POST",
+                data: JSON.stringify(
+                    {login: app.login, pwd: app.password}
+                ),
+                contentType: "application/json; charset=utf-8",
+                dataType   : "json",
+            }).done(resp => {app.token = resp.token; getMessages(); Cookies.set('token', resp.token); app.isLogedIn = true;})
+        };
+        logout = () => {
+            Cookies.remove('token');
+            app.isLogedIn = false;
+        };
+        var app = new Vue({
+            el: '#app',
+            data: {
+                messages: messages,
+                password: "",
+                newMessage: "",
+                sendNewMessage : sendNewMessage,
+                receivers: receivers,
+                signIn: signIn,
+                token: token,
+                login: "",
+                isLogedIn: isLogedIn,
+                logout: logout
+            }
+        });
+        getMessages();
+    </script>
+</body>
+</html>

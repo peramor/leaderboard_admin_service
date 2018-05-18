@@ -5,6 +5,7 @@ const messages = require('./src/messages');
 const participants = require('./src/participants');
 const login = require('./src/login');
 const authN = require('./src/authN');
+const path = require('path');
 
 app.use(bodyParser.json());
 
@@ -26,6 +27,10 @@ app.use(function (req, res, next) {
 
   // Pass to next layer of middleware
   next();
+});
+
+app.get('/admin', function(req,res) {
+  res.sendFile(path.join(__dirname, 'admin', 'index.html'));
 });
 
 app.post('/api/admin/login', function (req, res) {
