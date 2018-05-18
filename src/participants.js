@@ -4,7 +4,7 @@ const Promise = require('promise');
 function getParticipants(eventId) {
   let text = `SELECT 
   h.id, h.username, h.pic, h.contactPhone, h.email, h.tgProfileLink,
-  coalesce(sum(p.xp),0) as xp, min(p.hackerStatus) as "status",
+  coalesce(sum(p.xp),0) as xp, min(p.hackerStatus) as "status", bool_or(p.isSearchable),
   json_agg(s.tag) as "skills"
   FROM Participations p
   LEFT JOIN Hackers h on h.id = p.hackerId
@@ -35,6 +35,7 @@ exports.getList = async (eventId) => {
       status: r.status,
       skills: r.skills,
       tgProfileLink: r.tgprofilelink,
+      isSearchable: r.bool_or,
       xp: r.xp
     }));
 

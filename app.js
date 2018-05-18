@@ -14,7 +14,7 @@ app.post('/api/admin/messages', function (req, res) {
       res.send();
     })
     .catch(err => {
-      res.status(500).send();      
+      res.status(500).send(err);      
     });
 });
 
@@ -25,7 +25,7 @@ app.get('/api/admin/messages', function (req, res) {
       messages.saveTimestamp(result.messages);
     })
     .catch(err => {
-      res.status(500).send();
+      res.status(500).send(err);
     });
 });
 
@@ -35,7 +35,7 @@ app.get('/api/admin/participants/:id', function(req,res) {
       res.send(prts);
     })
     .catch(err => {
-      res.status(500).send();
+      res.status(500).send(err);
     })
 });
 
