@@ -29,7 +29,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/admin', function(req,res) {
+app.get('/api/admin', function(req,res) {
   res.sendFile(path.join(__dirname, 'admin', 'index.html'));
 });
 
