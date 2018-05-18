@@ -36,7 +36,7 @@ function getNewerMessages(eventId, lastMessageId) {
 function getReceivers(eventId) {
   let text = `SELECT tgId FROM Participations p
   LEFT JOIN Hackers h on p.hackerId = h.id
-  WHERE p.eventId = $1`;
+  WHERE p.eventId = $1 and p.hackerStatus != 'participated' `;
 
   let query = {
     name: 'get-hackers',

@@ -23,15 +23,15 @@ function getParticipants(eventId) {
     .then(res => res.rows);
 }
 
-exports.getList = async (eventId) => {
+exports.getList = async (eventId, role) => {
   try {
     let rows = await getParticipants(eventId);
     let resRows = rows.map(r => ({
       id: r.id,
       username: r.username,
       pic: r.pic,
-      contactPhone: r.contactphone,
-      email: r.email,
+      contactPhone: role === 'org' ? r.contactphone : null,
+      email: role === 'org' ? r.email : null,
       status: r.status,
       skills: r.skills,
       tgProfileLink: r.tgprofilelink,
