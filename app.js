@@ -9,7 +9,7 @@ const path = require('path');
 
 app.use(bodyParser.json());
 
-app.get('/api/admin', function(req,res) {
+app.get('/api/admin', function (req, res) {
   res.sendFile(path.join(__dirname, 'admin', 'index.html'));
 });
 
@@ -22,7 +22,7 @@ app.post('/api/admin/login', function (req, res) {
       if (err.code === 401)
         return res.status(401).send();
       res.status(500).send(err);
-      console.error(err);      
+      console.error(err);
     });
 });
 
@@ -34,7 +34,7 @@ app.post('/api/admin/messages', authN.middleware(), function (req, res) {
       res.send();
     })
     .catch(err => {
-      console.error(err);      
+      console.error(err);
       res.status(500).send(err);
     });
 });
@@ -43,10 +43,11 @@ app.get('/api/admin/messages', authN.middleware(), function (req, res) {
   messages.getList(req.query)
     .then(result => {
       res.send(result);
-      messages.saveTimestamp(result.messages);
+      if (req._acl.role === 'bot')
+        messages.saveTimestamp(result.messages);
     })
     .catch(err => {
-      console.error(err);      
+      console.error(err);
       res.status(500).send(err);
     });
 });
