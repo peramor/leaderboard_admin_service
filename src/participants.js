@@ -36,7 +36,7 @@ exports.getList = async (eventId, role) => {
       skills: r.skills,
       tgProfileLink: r.tgprofilelink,
       isSearchable: r.bool_or,
-      xp: r.xp
+      xp: r.xp / (r.skills.length || 1)
     }));
 
     return Promise.resolve(resRows);
