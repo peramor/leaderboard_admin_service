@@ -50,7 +50,7 @@ function getReceivers(eventId) {
 
 function postMessage(eventId, content) {
   let text = `INSERT INTO Messages (eventId, content, postTimestamp)
-  VALUES ($1, $2, '${Math.trunc(Date.now() / 1000)}')`
+  VALUES ($1, $2, (select extract(epoch from now())));`
 
   let query = {
     name: 'insert-message',
